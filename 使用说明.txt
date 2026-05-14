@@ -1,0 +1,23 @@
+GroomReport 单机版（无需 Cursor / 无需 npm）— 布局 v57
+
+用法
+----
+1. macOS：双击「GroomReport.command」或「启动 GroomReport.command」，会在本机浏览器打开应用。
+2. Windows：双击「GroomReport.bat」或「启动 GroomReport.bat」。
+
+说明
+----
+• 本包构建时的布局版本为 v57，须与页面角标「v57」一致；若角标更旧，请用新 dist 替换本文件夹后重开。
+• 通过本机临时网页服务（127.0.0.1）打开，这样 PDF/图片导出与 ES 模块才能正常工作；请勿只双击 index.html。
+• 可将本文件夹整体复制到任意路径后再启动。
+• 需要系统已安装 Python 3（macOS 通常自带 python3）。
+
+若浏览器提示无法连接 / This site can't be reached
+----
+• 请先看「终端」窗口里是否有 Python 红色报错；脚本会自动避开已被占用的端口（8765–8804）。
+• 可手动在浏览器地址栏输入终端里显示的 http://127.0.0.1:端口/ 再试。
+• Windows：请双击「GroomReport.bat」或「启动 GroomReport.bat」，不要单独新开 cmd 再运行 python，否则工作目录不对会打不开页面。
+
+构建
+----
+在项目根目录执行：npm run build:standalone
