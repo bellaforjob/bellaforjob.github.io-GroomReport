@@ -1,4 +1,4 @@
-import { chmodSync, readFileSync, writeFileSync } from 'node:fs'
+import { chmodSync, copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -144,6 +144,12 @@ writeFileSync(join(dist, 'GroomReport.bat'), winLauncher, 'utf8')
 writeFileSync(join(dist, '使用说明.txt'), readme, 'utf8')
 writeFileSync(join(dist, 'LAYOUT_VERSION.txt'), `${layoutVersion}\n`, 'utf8')
 
+const indexHtml = join(dist, 'index.html')
+if (existsSync(indexHtml)) {
+  copyFileSync(indexHtml, join(dist, '404.html'))
+}
+
 console.info(
-  `[standalone] Wrote GroomReport.command / 启动 GroomReport.command, .bat twins, LAYOUT_VERSION.txt (${layoutVersion}), 使用说明.txt → dist/`,
+  `[standalone] Wrote GroomReport.command / 启动 GroomReport.command, .bat twins, LAYOUT_VERSION.txt (${layoutVersion}), 使用说明.txt → dist/` +
+    (existsSync(indexHtml) ? ' + 404.html' : ''),
 )

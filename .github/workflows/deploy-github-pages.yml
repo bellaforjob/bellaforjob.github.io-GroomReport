@@ -1,8 +1,17 @@
-# 构建并把 dist 推到「孤儿分支」gh-pages，供仓库 Settings → Pages 选择该分支发布。
+# 构建并把 dist 推到「孤儿分支」gh-pages。
+#
+# 【推荐】Pages：Settings → Pages → Source 选「Deploy from a branch」
+#         Branch = gh-pages，Folder = / (root)
+# 每次用 git push 把代码推到 main 后，本 workflow 会自动跑并更新 gh-pages。
+# 不要用 GitHub 网页「Upload files」只上传 dist：不会触发本 workflow，且若 Pages 仍指向 main 根目录会一直白屏。
+#
+# 若 Pages 选的是「GitHub Actions」，请改用 static.yml（仅手动 workflow_dispatch），不要同时用本 workflow 自动 push。
+#
 # 发布后一般为：https://<用户名>.github.io/<仓库名>/
 # 若仓库名是「用户名.github.io」（根域名用户站），请删掉下面 Build 步骤里的 env / VITE_BASE_PATH 整块。
-# 首次使用：Settings → Pages → Build and deployment → Source 选「Deploy from a branch」
-#           Branch 选 gh-pages，folder 选 / (root)。保存后等一两分钟再访问。
+#
+# 若始终没有 gh-pages：Settings → Actions → General → Workflow permissions → Read and write；
+# 并确认本文件已存在于默认分支的 .github/workflows/。
 
 name: Deploy GitHub Pages
 
@@ -22,9 +31,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: npm
@@ -35,6 +44,11 @@ jobs:
       # 与 vite.config.js 中 VITE_BASE_PATH 一致：项目页必须带子路径 /<仓库名>/
       - name: Build
         run: npm run build
+        env:
+          VITE_BASE_PATH: ${{ github.event.repository.name }}
+
+      - name: Verify dist
+        run: npm run verify:pages-dist
         env:
           VITE_BASE_PATH: ${{ github.event.repository.name }}
 

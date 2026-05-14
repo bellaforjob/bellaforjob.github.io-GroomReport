@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "postbuild": "node scripts/write-standalone-launchers.mjs",
+    "verify:pages-dist": "node scripts/verify-pages-dist.mjs",
     "build:portable": "vite build --base ./ && node scripts/write-standalone-launchers.mjs",
     "build:standalone": "vite build --base ./ && node scripts/write-standalone-launchers.mjs",
     "lint": "eslint .",
