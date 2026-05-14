@@ -1,0 +1,19 @@
+# Netlify / compatible static hosts — avoid serving stale index.html / SW that point at old JS.
+# Hashed assets under /assets/* can stay long-cache (host defaults); these must revalidate every visit.
+
+/
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+
+/index.html
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/manifest.webmanifest
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/registerSW.js
+  Cache-Control: no-cache, no-store, must-revalidate
