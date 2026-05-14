@@ -1,0 +1,38 @@
+{
+  "name": "groom-report",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "postbuild": "node scripts/write-standalone-launchers.mjs",
+    "build:portable": "vite build --base ./ && node scripts/write-standalone-launchers.mjs",
+    "build:standalone": "vite build --base ./ && node scripts/write-standalone-launchers.mjs",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "preview:mobile": "vite preview --host 0.0.0.0 --port 4173",
+    "bake-layout": "node scripts/bake-layout.mjs"
+  },
+  "dependencies": {
+    "heic2any": "^0.0.4",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.2.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.5.0",
+    "tailwindcss": "^4.2.4",
+    "vite": "^8.0.10",
+    "vite-plugin-pwa": "^1.2.0"
+  }
+}

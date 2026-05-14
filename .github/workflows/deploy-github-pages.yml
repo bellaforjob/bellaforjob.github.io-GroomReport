@@ -1,0 +1,46 @@
+# 构建并把 dist 推到「孤儿分支」gh-pages，供仓库 Settings → Pages 选择该分支发布。
+# 发布后一般为：https://<用户名>.github.io/<仓库名>/
+# 若仓库名是「用户名.github.io」（根域名用户站），请删掉下面 Build 步骤里的 env / VITE_BASE_PATH 整块。
+# 首次使用：Settings → Pages → Build and deployment → Source 选「Deploy from a branch」
+#           Branch 选 gh-pages，folder 选 / (root)。保存后等一两分钟再访问。
+
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: github-pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # 与 vite.config.js 中 VITE_BASE_PATH 一致：项目页必须带子路径 /<仓库名>/
+      - name: Build
+        run: npm run build
+        env:
+          VITE_BASE_PATH: ${{ github.event.repository.name }}
+
+      - name: Push dist to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: true
